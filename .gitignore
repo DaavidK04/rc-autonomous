@@ -1,0 +1,26 @@
+# compiled programs
+pi/rccar
+pi/tools/*
+!pi/tools/*.cpp
+*.o
+
+# kicad backups and local settings
+hardware/*-backups/
+hardware/_restore_backup_*/
+hardware/*.kicad_prl
+hardware/fp-info-cache
+hardware/*.lck
+*.bak
+
+# production files
+hardware/gerber/
+hardware/*.gbr
+hardware/*.drl
+hardware/*.zip
+
+# esp build output
+ecu/**/build/
+ecu/**/sdkconfig.old
+ecu/**/managed_components/
+hardware/*.gbrjob
+hardware/report.txt
