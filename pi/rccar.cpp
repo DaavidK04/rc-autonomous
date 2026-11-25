@@ -96,7 +96,7 @@ void stopAll() {
 // ---------------------------------
 
 void printDashboard(bool connected, int throttle, int steering,
-		int leftSpeed, int rightSpeed, bool turbo) {
+		int leftSpeed, int rightSpeed, bool turbo, bool recording) {
 	std::cout << "\033[H";
 	std::cout << "=============== RC CAR CONTROLLER ===============\n";
 	std::cout << "Controller : "
@@ -108,6 +108,7 @@ void printDashboard(bool connected, int throttle, int steering,
 	std::cout << " Left PWM : " << std::setw(5) << toPWM(leftSpeed)
 		<< " Right PWM : " << std::setw(5) << toPWM(rightSpeed) << "\n";
 	std::cout << " Turbo    : " << (turbo ? "\033[33mON \033[0m" : "OFF") << "\n";
+	std::cout << " Recording    : " << (recording ? "\033[31mON \033[0m" : "OFF") << "\n";
 	std::cout << "-------------------------------------------------\n";
 	std::cout << " Left Stick Y -> Foreward / Backward\n";
 	std::cout << " Left Stick X -> Steer\n";
@@ -154,6 +155,7 @@ int main(int argc, char* argv[]) {
 	int axisLX = 0, axisLY = 0;
 	int axisL2 = 0, axisR2 = 0;	//Trigger: 0..127
 	bool turbo = false;
+	bool recording = false;
 	unsigned long frame = 0;
 
 	while (running) {
@@ -204,6 +206,8 @@ int main(int argc, char* argv[]) {
 							turbo = true;
 						if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START)
 							running = false;
+						if (event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
+							recording = !recording;
 						break;
 
 				case SDL_CONTROLLERBUTTONUP:
@@ -259,7 +263,7 @@ int main(int argc, char* argv[]) {
 		if (frame++ % DASHBOARD_EVERY == 0) {
 			printDashboard(controller != nullptr,
 					throttle, steering,
-					leftSpeed, rightSpeed, turbo);
+					leftSpeed, rightSpeed, turbo, recording);
 		}
 
 		SDL_Delay(LOOP_DELAY_MS);
